@@ -337,7 +337,7 @@ export default {
       }
 
       try {
-        const { data } = await axios.get(this.pasteId.length == 32 ? `https://api.paste.gg/v1/pastes/${this.pasteId}?full=true` : `https://hasteb.in/${this.pasteId}`)
+        const { data } = await axios.get(this.pasteId.startsWith("http") ? this.pasteId : `https://api.paste.gg/v1/pastes/${this.pasteId}?full=true`)
         data.files.forEach(file => {
           if (file.name === "config.yml") {
             this.config = file.content.value
@@ -419,7 +419,7 @@ export default {
       return !this.loaded && !this.error && !this.invalid;
     },
     originalUrl() {
-      return this.pasteId.length == 32 ? `https://paste.gg/p/anonymous/${this.pasteId}` : `https://hasteb.in/${this.pasteId}`;
+      return this.pasteId.startsWith("http") ? this.pasteId : `https://api.paste.gg/v1/pastes/${this.pasteId}?full=true`;
     },
     senderName() {
       return this.sender || "CONSOLE";
